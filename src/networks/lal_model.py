@@ -81,7 +81,7 @@ class LALModel(LightningModule):
         loss, preds, targets = self.step(batch)
 
         # log train metrics
-        pur = self.train_metric(preds, targets)
+        pur = self.train_metric(targets, preds)
 
         # we can return here dict with any tensors
         # and then read it in some callback or in training_epoch_end() below
@@ -122,7 +122,7 @@ class LALModel(LightningModule):
         loss, preds, targets = self.step(batch)
 
         # log train metrics
-        pur = self.val_metric(preds, targets)
+        pur = self.val_metric(targets, preds)
 
         return {"loss": loss, "preds": preds, "targets": targets, "pur": pur}
 
@@ -153,7 +153,7 @@ class LALModel(LightningModule):
         self.final_labels = preds
 
         # log test metrics
-        pur = self.test_metric(preds, targets)
+        pur = self.test_metric(targets, preds)
         self.log("test/loss", loss, on_step=False, on_epoch=True)
         self.log("test/pur", pur, on_step=False, on_epoch=True)
 

@@ -6,6 +6,7 @@ gpus: 1
 min_epochs: 1
 max_epochs: ${num_epochs}
 check_val_every_n_epoch: 1
+reload_dataloaders_every_n_epochs: 1
 
-weights_summary: null
-progress_bar_refresh_rate: 10
+# weights_summary: null
+# progress_bar_refresh_rate: 10

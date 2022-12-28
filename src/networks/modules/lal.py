@@ -21,7 +21,10 @@ class ScaledSoftplus(nn.Module):
         self.s = Parameter(torch.ones(1))
 
     def forward(self, x):
-        return self.s * torch.log(1 + torch.exp(x / self.s))
+        tmp = x / self.s
+        results = self.s * torch.log(1 + torch.exp(tmp))
+        results[tmp > 20] = tmp[tmp > 20]
+        return results
 
 
 class LSTMMultiplePointProcesses(nn.Module):

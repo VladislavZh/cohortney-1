@@ -147,8 +147,8 @@ class GammaChanger(Callback):
         else:
             self.update_clusters_no_enforce(trainer, pl_module, operation)
 
-        trainer.datamodule.n_clusters = pl_module.n_clusters
-        trainer.datamodule.dataset.reset_gamma(pl_module.n_clusters)
+        trainer.datamodule.n_clusters = pl_module.model.num_clusters
+        trainer.datamodule.dataset.reset_gamma(pl_module.model.num_clusters)
 
     def update_dataset(self, trainer, pl_module):
         trainer.datamodule.reset_datasets()
@@ -159,7 +159,7 @@ class GammaChanger(Callback):
         _, gamma = pl_module(trainer.datamodule.data_val.data.to(pl_module.device))
         trainer.datamodule.data_val.gamma.gamma = gamma.detach().clone()
     
-    def on_validation_epoch_end(self, trainer, pl_module):      
+    def on_train_epoch_end(self, trainer, pl_module):      
         pl_module.model.eval()
         with torch.no_grad():
             if (pl_module.current_epoch + 1) % self.max_m_step_epoch == 0:
